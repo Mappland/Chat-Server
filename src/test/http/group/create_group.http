@@ -1,7 +1,10 @@
-POST http://localhost:8888/api/group/create
+### 创建聊天域
+POST http://localhost:8888/group/create
 Content-Type: application/json
 
 {
-  "groupName": "mappland_group",
+  "groupName": "mappland's_group",
   "ownerId": 100000
 }
+
+###

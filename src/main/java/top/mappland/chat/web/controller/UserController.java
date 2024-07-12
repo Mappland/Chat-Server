@@ -75,7 +75,7 @@ public class UserController {
             return Response.error(401, "密码错误。");
         }
         // 生成Token
-        String token = JwtUtils.generateToken(user.getUsername());
+        String token = JwtUtils.generateToken(user.getUsername(), user.getUid());
         logger.info("User logged in successfully: {}", user.getUsername());
         return Response.success("登录成功！", token);
     }

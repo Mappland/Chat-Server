@@ -19,6 +19,9 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
+jwt:
+  secret: 42835051ca12dbdb17eacfbcae4a297220db807ad9c3a6762495e648ade8e117
+
 #logging:
 #  level:
 #    root: DEBUG
