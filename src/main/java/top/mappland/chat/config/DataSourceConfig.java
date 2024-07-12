@@ -7,10 +7,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 @EnableTransactionManagement
@@ -40,14 +43,27 @@ public class DataSourceConfig {
         return properties.initializeDataSourceBuilder().build();
     }
 
-    @Primary
-    @Bean(name = "chatUserTransactionManager")
-    public PlatformTransactionManager chatUserTransactionManager(@Qualifier("chatUserDataSource") DataSource dataSource) {
-        return new DataSourceTransactionManager(dataSource);
+    @Bean
+    public DataSource routingDataSource(@Qualifier("chatUserDataSource") DataSource chatUserDataSource,
+                                        @Qualifier("chatGroupDataSource") DataSource chatGroupDataSource) {
+        AbstractRoutingDataSource routingDataSource = new AbstractRoutingDataSource() {
+            @Override
+            protected Object determineCurrentLookupKey() {
+                return DataSourceContextHolder.getDataSourceKey();
+            }
+        };
+        Map<Object, Object> dataSourceMap = new HashMap<>();
+        dataSourceMap.put(DataSourceKey.CHAT_USER, chatUserDataSource);
+        dataSourceMap.put(DataSourceKey.CHAT_GROUP, chatGroupDataSource);
+
+        routingDataSource.setDefaultTargetDataSource(chatUserDataSource);
+        routingDataSource.setTargetDataSources(dataSourceMap);
+        return routingDataSource;
     }
 
-    @Bean(name = "chatGroupTransactionManager")
-    public PlatformTransactionManager chatGroupTransactionManager(@Qualifier("chatGroupDataSource") DataSource dataSource) {
-        return new DataSourceTransactionManager(dataSource);
+    @Primary
+    @Bean
+    public PlatformTransactionManager transactionManager(DataSource routingDataSource) {
+        return new DataSourceTransactionManager(routingDataSource);
     }
 }

@@ -1,0 +1,3 @@
+### 获取用户作为管理员或域主的群的加入请求
+GET http://localhost:8888/group/pendingJoinRequests
+Authorization: eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJNYXBwbGFuZCIsInVpZCI6MTAwMDAwLCJpYXQiOjE3MjA4MTYzMTIsImV4cCI6MTcyMDkwMjcxMn0.ce7P-r-gG9pihXG4gqds6kO918FpCB0XJR5Apys1wRvwqC7dhtcPy00OhzASXRB4

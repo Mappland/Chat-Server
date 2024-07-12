@@ -1,0 +1,11 @@
+### 用户登录
+POST http://localhost:8888/api/user/login
+Content-Type: application/json
+
+{
+  "uid": "100000",
+  "password": "#36041322107nbti"
+}
+
+### jwt
+eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJNYXBwbGFuZCIsInVpZCI6MTAwMDAwLCJpYXQiOjE3MjA4MTIyMzMsImV4cCI6MTcyMDg5ODYzM30.TRvT7mH5SoYxMqITgDTYAg6zKWIeFsi5GxVyaeVztj2__jGacUfKSs-R5t8Vw9ZZ

@@ -1,0 +1,11 @@
+### 创建聊天域
+POST http://localhost:8888/group/create
+Content-Type: application/json
+
+{
+  "groupName": "mappland's_group",
+  "jwt": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJNYXBwbGFuZCIsInVpZCI6MTAwMDAwLCJpYXQiOjE3MjA3OTEzMDcsImV4cCI6MTcyMDg3NzcwN30.kx3IWS-UgQOLtSjCfo3kTzBTb506jTZUhItsq4At65t2-3KiN6x8s4m12p895erf",
+  "ownerId": 100000
+}
+
+###

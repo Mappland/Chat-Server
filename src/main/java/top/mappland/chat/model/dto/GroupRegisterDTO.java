@@ -8,5 +8,6 @@ import lombok.Data;
 @Data
 public class GroupRegisterDTO {
     private String groupName;
+    private Long[] groupId;
     private Long ownerId;
 }

@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import top.mappland.chat.model.domain.User;
 import top.mappland.chat.model.dto.UserLoginDTO;
 import top.mappland.chat.model.dto.UserRegisterDTO;
@@ -55,19 +57,23 @@ public class UserController {
         user.setGender(userRegisterDTO.getGender());
         user.setCreated_at(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         userService.save(user);
-        logger.info("User registered successfully: {}", user.getUsername());
-        return Response.success("注册成功！", null);
+        logger.info("User registered successfully: {}", user.getUid());
+        return Response.success("注册成功！", String.valueOf(user.getUid()));
     }
 
     /**
      * 用户登录。
      *
-     * @param userLoginDTO 用户登录数据传输对象，包含用户名和密码。
+     * @param userLoginDTO 用户登录数据传输对象，包含用户ID、用户名和密码。
      * @return 如果登录成功，返回包含Token的响应对象；如果登录失败，返回错误消息。
      */
     @PostMapping("/login")
     public Response<String> login(@RequestBody UserLoginDTO userLoginDTO) {
-        User user = userService.lambdaQuery().eq(User::getUsername, userLoginDTO.getUsername()).one();
+        if (userLoginDTO.getUid() == null && userLoginDTO.getUsername() != null) {
+            return Response.error(400, "请使用UID进行登录。");
+        }
+
+        User user = userService.getById(userLoginDTO.getUid());
         if (user == null) {
             return Response.error(404, "用户不存在。");
         }
@@ -77,6 +83,14 @@ public class UserController {
         // 生成Token
         String token = JwtUtils.generateToken(user.getUsername(), user.getUid());
         logger.info("User logged in successfully: {}", user.getUsername());
+
+        // 获取客户端IP地址
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        String loginIp = attributes.getRequest().getRemoteAddr();
+
+        // 记录登录历史
+        userService.recordLoginHistory(user.getUid(), loginIp);
+
         return Response.success("登录成功！", token);
     }
 

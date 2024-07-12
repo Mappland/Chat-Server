@@ -4,4 +4,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import top.mappland.chat.model.domain.User;
 
 public interface UserService extends IService<User> {
+    void recordLoginHistory(Long uid, String loginIp);
 }

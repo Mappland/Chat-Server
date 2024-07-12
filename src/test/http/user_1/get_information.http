@@ -1,1 +1,2 @@
+### 通过uid获取用户信息
 GET http://localhost:8888/api/user/100000
