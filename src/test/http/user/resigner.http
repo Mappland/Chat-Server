@@ -1,0 +1,10 @@
+### Register a new user
+POST http://localhost:8888/api/user/register
+Content-Type: application/json
+
+{
+  "username": "newuser2",
+  "password": "securepassword",
+  "email": "newuser2@example.com",
+  "gender": "female"
+}

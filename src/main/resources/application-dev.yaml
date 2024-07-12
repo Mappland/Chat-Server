@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: demo
+  datasource:
+    chat-user:
+      url: jdbc:mysql://47.109.199.76:3306/chat_user
+      username: test
+      password: testtest
+      driver-class-name: com.mysql.cj.jdbc.Driver
+    chat-group:
+      url: jdbc:mysql://47.109.199.76:3306/chat_group
+      username: test
+      password: testtest
+      driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+# 控制台日志输出
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#logging:
+#  level:
+#    root: DEBUG
+#    org.springframework: DEBUG
+#    org.apache: DEBUG

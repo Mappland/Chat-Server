@@ -1,0 +1,7 @@
+POST http://localhost:8888/api/group/create
+Content-Type: application/json
+
+{
+  "groupName": "mappland_group",
+  "ownerId": 100000
+}

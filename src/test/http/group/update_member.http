@@ -1,0 +1,8 @@
+PUT http://localhost:8888/api/group/updateMemberRole
+Content-Type: application/json
+
+{
+  "groupId": 1,
+  "userId": 100002,
+  "role": "ADMIN"
+}

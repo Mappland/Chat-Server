@@ -1,0 +1,9 @@
+POST http://localhost:8888/api/group/addMember
+Content-Type: application/json
+
+
+{
+  "groupId": 1,
+  "userId": 100002,
+  "role": "MEMBER"
+}
