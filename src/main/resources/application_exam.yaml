@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: Chat-demo-service
+  profiles:
+    active: dev
+server:
+  port: 8888

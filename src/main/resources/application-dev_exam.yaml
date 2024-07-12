@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: demo
+  datasource:
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 10
+      idle-timeout: 30000  # 30 seconds
+      max-lifetime: 60000  # 60 seconds
+      connection-timeout: 30000  # 30 seconds
+      connection-test-query: SELECT 1
+
+    chat-user:
+      url: jdbc:mysql://localhost:3306/chat_user
+      username: test
+      password: testtest
+      driver-class-name: com.mysql.cj.jdbc.Driver
+    chat-group:
+      url: jdbc:mysql://localhost:3306/chat_group
+      username: test
+      password: testtest
+      driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+# 控制台日志输出
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+jwt:
+  secret: Your 256-bit secret key  # 可以从 256-bit_secret_key_generate.py生成
+
+
+
+logging:
+  level:
+    root: DEBUG
+    org.springframework: DEBUG
+    org.apache: DEBUG
