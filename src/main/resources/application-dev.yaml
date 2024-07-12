@@ -2,6 +2,14 @@ spring:
   application:
     name: demo
   datasource:
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 10
+      idle-timeout: 30000  # 30 seconds
+      max-lifetime: 60000  # 60 seconds
+      connection-timeout: 30000  # 30 seconds
+      connection-test-query: SELECT 1
+
     chat-user:
       url: jdbc:mysql://47.109.199.76:3306/chat_user
       username: test
@@ -22,8 +30,10 @@ mybatis-plus:
 jwt:
   secret: 42835051ca12dbdb17eacfbcae4a297220db807ad9c3a6762495e648ade8e117
 
-#logging:
-#  level:
-#    root: DEBUG
-#    org.springframework: DEBUG
-#    org.apache: DEBUG
+
+
+logging:
+ level:
+   root: DEBUG
+   org.springframework: DEBUG
+   org.apache: DEBUG
