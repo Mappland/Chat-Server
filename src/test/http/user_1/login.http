@@ -3,9 +3,9 @@ POST http://localhost:8888/api/user/login
 Content-Type: application/json
 
 {
-  "uid": "1000001",
-  "password": "#3604132210nbti"
+  "uid": "100000",
+  "password": "#36041322107nbti"
 }
 
 ### jwt
-eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJNYXBwbGFuZCIsInVpZCI6MTAwMDAwLCJpYXQiOjE3MjA4NzAyNTcsImV4cCI6MTcyMDk1NjY1N30.hIAifIKz6cNRHCXPvnoo4vEHjF7AW3qB20163beqK3G6COjI8_uTkAvhOcVOlPXL
+eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJNYXBwbGFuZCIsInVpZCI6MTAwMDAwLCJpYXQiOjE3MjA4ODY2MzksImV4cCI6MTcyMDk3MzAzOX0.J-t1qOYU-j-Hd5azP3D8_v8SnJJLetPlQ9XT-o9qGQcGy1j1Qp-T5HGbIW8jX_80

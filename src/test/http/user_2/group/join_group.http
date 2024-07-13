@@ -1,10 +1,10 @@
 ### 请求加入群组
-POST http://47.109.199.76:8888/group/join
+POST http://localhost:8888/group/join
 Content-Type: application/json
 Authorization: eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0IiwidWlkIjoxMDAwMDEsImlhdCI6MTcyMDg3MDk5NiwiZXhwIjoxNzIwOTU3Mzk2fQ.tRq4EOMMyKgWQgLYowME_ubUSsmjHePmyy-wmnc8sV4jiYJmylMHVGcUQoObB1CZ
 
 {
-  "groupId": 100000001,
+  "groupId": 100000000,
   "userId": 100001,
   "role": "MEMBER"
 }

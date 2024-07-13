@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Chat Test</title>
+</head>
+
+<body>
+<h1>WebSocket Chat Test</h1>
+<div>
+    <label for="message">Message:</label>
+    <input type="text" id="message">
+    <button onclick="sendMessage()">Send</button>
+</div>
+<div>
+    <h2>Messages:</h2>
+    <ul id="messages"></ul>
+</div>
+
+<script>
+    // 连接到WebSocket服务器
+    const socket = new WebSocket("ws://localhost:8888/chat?groupId=100000000");
+
+    socket.onopen = function () {
+        console.log("Connected to WebSocket server.");
+    };
+
+    socket.onmessage = function (event) {
+        const message = JSON.parse(event.data);
+        console.log(message);
+        console.log("Received: " + message.content);
+
+        // 显示收到的消息
+        const messagesList = document.getElementById("messages");
+        const newMessage = document.createElement("li");
+        newMessage.textContent = `[${message.timestamp}] ${message.senderUid} -- ${message.senderName}: ${message.content}`;
+        messagesList.appendChild(newMessage);
+    };
+
+    socket.onclose = function () {
+        console.log("Disconnected from WebSocket server.");
+    };
+
+    socket.onerror = function (error) {
+        console.error("WebSocket error: " + error);
+    };
+
+    function sendMessage() {
+        const messageInput = document.getElementById("message");
+        const message = messageInput.value;
+
+        const messageObj = {
+            jwt:
+                "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0MSIsInVpZCI6MTAwMDAxLCJpYXQiOjE3MjA4ODY4MzIsImV4cCI6MTcyMDk3MzIzMn0.zf7EBhUFL4DKaprDXMJiGE0x8tSNjXFDj696UDr16Vpb3RSJMGbtQNd4N1dNMPll",
+            // 这里需要替换为实际的JWT
+            uid: "100001", // 这里需要替换为实际的用户ID
+            groupId: "100000000",
+            message: message
+        };
+
+        // 发送消息到WebSocket服务器
+        socket.send(JSON.stringify(messageObj));
+
+        // 清空输入框
+        messageInput.value = "";
+    }
+
+</script>
+</body>
+
+</html>

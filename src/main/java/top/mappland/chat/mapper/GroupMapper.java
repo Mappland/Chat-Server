@@ -95,6 +95,9 @@ public interface GroupMapper extends BaseMapper<User> {
     @Select("SELECT role FROM chat_group.${groupId}_member WHERE group_id = #{groupId} AND uid = #{uid}")
     String getUserRole(@Param("groupId") Long groupId, @Param("uid") Long uid);
 
+    @Select("SELECT username from chat_user.user WHERE uid = #{uid}")
+    String getUsernameByUid(@Param("uid") Long uid);
+
     /**
      * 插入管理员群组记录
      *
@@ -139,4 +142,7 @@ public interface GroupMapper extends BaseMapper<User> {
             "</script>"
     })
     List<GroupJoinRequest> getPendingJoinRequests(@Param("adminGroups") List<Long> adminGroups);
+
+    @Select("SELECT uid FROM chat_group.${groupId}_member")
+    List<String> findGroupMembers(@Param("groupId") String groupId);
 }

@@ -8,11 +8,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.mappland.chat.config.DataSourceKey;
 import top.mappland.chat.config.UseDataSource;
+import top.mappland.chat.handler.ChatWebSocketHandler;
 import top.mappland.chat.mapper.GroupMapper;
 import top.mappland.chat.model.domain.GroupJoinRequest;
-import top.mappland.chat.model.dto.GroupRegisterDTO;
 import top.mappland.chat.model.dto.GroupJoinDTO;
 import top.mappland.chat.model.dto.ChangeRoleDTO;
+import top.mappland.chat.model.dto.GroupMessageDTO;
 import top.mappland.chat.model.vo.Response;
 import top.mappland.chat.service.GroupService;
 import top.mappland.chat.util.JwtUtils;
@@ -30,6 +31,8 @@ public class GroupServiceImpl implements GroupService {
 
     @Autowired
     private GroupMapper groupMapper;
+    @Autowired
+    private ChatWebSocketHandler chatWebSocketHandler;
 
     @Override
     @Transactional
@@ -226,5 +229,29 @@ public class GroupServiceImpl implements GroupService {
         }
 
         return null;
+    }
+
+    @Override
+    public void sendMessageToGroup(GroupMessageDTO groupMessageDTO) {
+        String groupId = groupMessageDTO.getGroupId();
+        List<String> members = groupMapper.findGroupMembers(groupId);
+
+        for (String member : members) {
+            try {
+                sendMessageToMember(member, groupMessageDTO);
+            } catch (Exception e) {
+                logger.error("Failed to send message to member: " + member, e);
+            }
+        }
+    }
+
+    @Override
+    public void sendMessageToMember(String memberId, GroupMessageDTO groupMessageDTO) throws Exception {
+        chatWebSocketHandler.sendMessageToMember(groupMessageDTO);
+    }
+
+    @Override
+    public String getUsernameByUid(Long uid){
+        return groupMapper.getUsernameByUid(uid);
     }
 }
