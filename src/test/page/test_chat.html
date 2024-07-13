@@ -35,7 +35,7 @@
         // 显示收到的消息
         const messagesList = document.getElementById("messages");
         const newMessage = document.createElement("li");
-        newMessage.textContent = `[${message.timestamp}] ${message.senderUid} -- ${message.senderName}: ${message.content}`;
+        newMessage.textContent = `[${message.timestamp}] ${message.uid} -- ${message.username}: ${message.content}`;
         messagesList.appendChild(newMessage);
     };
 

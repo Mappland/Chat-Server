@@ -3,15 +3,14 @@ package top.mappland.chat.handler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 import top.mappland.chat.model.dto.GroupMessageDTO;
+import top.mappland.chat.mapper.UserMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import top.mappland.chat.service.GroupService;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -23,6 +22,12 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     private static final Logger logger = LoggerFactory.getLogger(ChatWebSocketHandler.class);
     private ConcurrentMap<String, ConcurrentMap<String, WebSocketSession>> groupSessions = new ConcurrentHashMap<>();
     private ObjectMapper objectMapper = new ObjectMapper();
+
+    private UserMapper userMapper;
+
+    public void setUserMapper(UserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -72,22 +77,22 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     }
 
     private MessagePayload createMessagePayload(GroupMessageDTO groupMessageDTO) {
+        String username = userMapper.findUsernameByUid(groupMessageDTO.getUid());
         MessagePayload payload = new MessagePayload();
         payload.setType("message");
-        payload.setSenderUid(groupMessageDTO.getUid());
-        payload.setSenderName(groupMessageDTO.getUsername());
+        payload.setUid(groupMessageDTO.getUid());
+        payload.setUsername(username);
         payload.setGroupId(groupMessageDTO.getGroupId());
         payload.setTimestamp(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")));
         payload.setContent(groupMessageDTO.getMessage());
         return payload;
     }
-
     @Getter
     @Setter
     private static class MessagePayload {
         private String type;
-        private String senderUid;
-        private String senderName;
+        private String uid;
+        private String username;
         private String groupId;
         private String timestamp;
         private String content;

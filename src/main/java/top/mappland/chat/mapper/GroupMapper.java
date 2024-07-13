@@ -2,8 +2,6 @@ package top.mappland.chat.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.*;
-import org.apache.ibatis.jdbc.SQL;
-import org.apache.ibatis.mapping.StatementType;
 import top.mappland.chat.model.domain.GroupJoinRequest;
 import top.mappland.chat.model.domain.User;
 
@@ -14,15 +12,6 @@ import java.util.List;
  */
 @Mapper
 public interface GroupMapper extends BaseMapper<User> {
-
-//    @Select("{CALL create_chat_group(#{groupName, mode=IN, jdbcType=VARCHAR}, " +
-//            "#{ownerId, mode=IN, jdbcType=BIGINT}, " +
-//            "#{groupId, mode=OUT, jdbcType=BIGINT})}")
-//    @Options(statementType = StatementType.CALLABLE)
-//    void createChatGroup(@Param("groupName") String groupName,
-//                         @Param("ownerId") Long ownerId,
-//                         @Param("groupId") Long[] groupId);
-
     /**
      * 添加成员到聊天域
      *
