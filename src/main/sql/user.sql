@@ -36,6 +36,7 @@ BEGIN
     SET @group_table_sql = CONCAT('CREATE TABLE ', group_table_name, ' (
         id BIGINT PRIMARY KEY AUTO_INCREMENT,
         group_id BIGINT NOT NULL,
+        role ENUM(''OWNER'', ''ADMIN'', ''MEMBER'') DEFAULT ''MEMBER'',
         created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
     )');
 

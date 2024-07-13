@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.mappland.chat.model.domain.GroupJoinRequest;
 import top.mappland.chat.model.domain.Group;
+import top.mappland.chat.model.dto.GroupJoinApproveDTO;
 import top.mappland.chat.model.dto.GroupRegisterDTO;
 import top.mappland.chat.model.dto.GroupJoinDTO;
 import top.mappland.chat.model.dto.ChangeRoleDTO;
@@ -44,14 +45,21 @@ public class GroupController {
         return Response.success("群组创建成功！id如下", String.valueOf(group.getGroupId()));
     }
 
+    @PostMapping("/approveJoin")
+    public Response<String> approveJoinRequest(@RequestBody GroupJoinApproveDTO groupJoinApproveDTO, @RequestHeader("Authorization") String token) {
+//    public Response<String> approveJoinRequest(@RequestBody Long requestId, @RequestBody Long groupId, @RequestBody Boolean approve, @RequestHeader("Authorization") String token) {
+        Long requestId = groupJoinApproveDTO.getRequestId();
+        Long groupId = groupJoinApproveDTO.getGroupId();
+        Long uid = groupJoinApproveDTO.getUid();
+        Long requestUid = groupJoinApproveDTO.getRequestUid();
+        boolean approve = groupJoinApproveDTO.isApprove();
+        return groupService.approveJoinRequest(uid, requestId, groupId, approve, requestUid);
+    }
+
+
     @PostMapping("/join")
     public Response<String> requestJoinGroup(@RequestBody GroupJoinDTO groupJoinDTO, @RequestHeader("Authorization") String token) {
         return groupService.requestJoinGroup(groupJoinDTO, token);
-    }
-
-    @PostMapping("/approveJoin")
-    public Response<String> approveJoinRequest(@RequestParam Long requestId, @RequestHeader("Authorization") String token) {
-        return groupService.approveJoinRequest(requestId, token);
     }
 
     @PostMapping("/changeRole")

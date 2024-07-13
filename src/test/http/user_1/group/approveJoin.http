@@ -1,6 +1,12 @@
-### 审批加入请求
+### Approve Join Request
 POST http://localhost:8888/group/approveJoin
-Content-Type: application/x-www-form-urlencoded
-Authorization: eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJNYXBwbGFuZCIsInVpZCI6MTAwMDAwLCJpYXQiOjE3MjA4MTYzMTIsImV4cCI6MTcyMDkwMjcxMn0.ce7P-r-gG9pihXG4gqds6kO918FpCB0XJR5Apys1wRvwqC7dhtcPy00OhzASXRB4
+Authorization: eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJNYXBwbGFuZCIsInVpZCI6MTAwMDAwLCJpYXQiOjE3MjA4Njk1NTAsImV4cCI6MTcyMDk1NTk1MH0.VigsDDjYPdwJ7_-RIrlAkuQ9mMhCdQkA3ZRJEd0Ftd6yKzICbKsbsBtshkTcxEgp
+Content-Type: application/json
 
-requestId=1
+{
+  "groupId": 100000000,
+  "requestId": 1,
+  "uid": 100000,
+  "requestUid": 100001,
+  "approve": true
+}

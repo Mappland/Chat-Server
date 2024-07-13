@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import top.mappland.chat.config.DataSourceKey;
 import top.mappland.chat.config.UseDataSource;
 import top.mappland.chat.mapper.GroupCreateMapper;
+import top.mappland.chat.mapper.GroupMapper;
 import top.mappland.chat.model.domain.Group;
 import top.mappland.chat.service.GroupCreateService;
 
@@ -15,8 +16,11 @@ public class GroupCreateServiceImpl extends ServiceImpl<GroupCreateMapper, Group
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+
     @Autowired
     private GroupCreateMapper groupCreateMapper;
+    @Autowired
+    private GroupMapper groupMapper;
 
     @UseDataSource(DataSourceKey.CHAT_GROUP)
     @Override
@@ -25,11 +29,12 @@ public class GroupCreateServiceImpl extends ServiceImpl<GroupCreateMapper, Group
         if (isSaved) {
             createDynamicTables(group.getGroupId(), group.getOwner_id());
             group.setGroupId(group.getGroupId());
+            groupMapper.insertUserGroupItem(group.getGroupId(), "OWNER", group.getOwner_id());
         }
         return isSaved;
     }
 
-    private void createDynamicTables(Long uid, Long ownerId) {
-        jdbcTemplate.update("CALL chat_group.create_chat_group(?, ?)", uid, ownerId);
+    private void createDynamicTables(Long groupId, Long ownerId) {
+        jdbcTemplate.update("CALL chat_group.create_chat_group(?, ?)", groupId, ownerId);
     }
 }

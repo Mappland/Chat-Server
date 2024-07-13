@@ -26,19 +26,10 @@ import java.util.List;
  */
 @Service
 public class GroupServiceImpl implements GroupService {
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     private GroupMapper groupMapper;
-
-
-//    @Override
-//    @Transactional
-//    public Response<String> createGroup(GroupRegisterDTO groupRegisterDTO) {
-//        Long[] groupId = new Long[1];
-//        groupMapper.createChatGroup(groupRegisterDTO.getGroupName(), groupRegisterDTO.getOwnerId(), groupId);
-//        groupMapper.insertAdminGroupRecord(groupRegisterDTO.getOwnerId(), groupId[0], "OWNER");
-//        return Response.success("聊天域创建成功，群组ID: " + groupId[0], null);
-//    }
 
     @Override
     @Transactional
@@ -60,24 +51,31 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     @Transactional
-    public Response<String> approveJoinRequest(Long requestId, String token) {
-        Claims claims = JwtUtils.parseToken(token);
-        Long approverId = claims.get("uid", Long.class);
+    public Response<String> approveJoinRequest(Long uid, Long requestId, Long groupId, Boolean approve, Long requestUid) {
 
-        GroupJoinRequest joinRequest = groupMapper.getPendingJoinRequestById(requestId);
+        GroupJoinRequest joinRequest = groupMapper.getPendingJoinRequestById(groupId, requestId);
         if (joinRequest == null) {
             return Response.error(404, "加入请求不存在");
         }
 
-        String role = groupMapper.getUserRole(joinRequest.getGroupId(), approverId);
+        String role = groupMapper.getUserRole(groupId, uid);
+        logger.info(role);
         if (!"OWNER".equals(role) && !"ADMIN".equals(role)) {
             return Response.error(403, "无权审批加入请求");
         }
 
-        groupMapper.updateJoinRequestStatus(requestId, "APPROVED", approverId);
-        groupMapper.addGroupMember(joinRequest.getGroupId(), joinRequest.getUserId(), "MEMBER");
-        return Response.success("加入请求已批准", null);
+        String status = approve ? "APPROVED" : "REJECTED";
+        groupMapper.updateJoinRequestStatus(groupId, requestId, status, uid);
+
+        if (approve) {
+            groupMapper.addGroupMember(groupId, requestUid);
+            groupMapper.insertUserGroupItem(groupId, "MEMBER", requestUid);
+        }
+
+        String message = approve ? "加入请求已批准" : "加入请求已拒绝";
+        return Response.success(message, null);
     }
+
 
     @Override
     @Transactional
@@ -116,7 +114,7 @@ public class GroupServiceImpl implements GroupService {
             return Response.error(409, "用户已在群组中");
         }
 
-        groupMapper.addGroupMember(groupId, userId, role);
+        groupMapper.addGroupMember(groupId, userId);
         return Response.success("用户邀请成功", null);
     }
 

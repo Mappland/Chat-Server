@@ -1,7 +1,7 @@
 ### 请求加入群组
 POST http://localhost:8888/group/join
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0IiwidWlkIjoxMDAwMDEsImlhdCI6MTcyMDgxNjM1NCwiZXhwIjoxNzIwOTAyNzU0fQ.BpgO07mN-iLGx3yM7np0b6bZd4zjgRf81-O6MhGK6n3DCnlcMSjGkmwclbBj9zmu
+Authorization: eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0IiwidWlkIjoxMDAwMDEsImlhdCI6MTcyMDg3MDk5NiwiZXhwIjoxNzIwOTU3Mzk2fQ.tRq4EOMMyKgWQgLYowME_ubUSsmjHePmyy-wmnc8sV4jiYJmylMHVGcUQoObB1CZ
 
 {
   "groupId": 100000000,
@@ -10,4 +10,6 @@ Authorization: eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0IiwidWlkIjoxMDAwMDEsImlhdCI6
 }
 
 ### jwt
-eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0IiwidWlkIjoxMDAwMDEsImlhdCI6MTcyMDgwMTczMCwiZXhwIjoxNzIwODg4MTMwfQ.to9h6c_LxxvVRE5-rOt3TbHh0Q2bA083rF3vEkn77YZS3uhUj9ZjN7czW37BSUWR
+eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0IiwidWlkIjoxMDAwMDEsImlhdCI6MTcyMDg3MDk5NiwiZXhwIjoxNzIwOTU3Mzk2fQ.tRq4EOMMyKgWQgLYowME_ubUSsmjHePmyy-wmnc8sV4jiYJmylMHVGcUQoObB1CZ
+
+

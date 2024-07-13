@@ -18,7 +18,7 @@ public interface GroupService {
 
     Response<String> requestJoinGroup(GroupJoinDTO groupJoinDTO, String token);
 
-    Response<String> approveJoinRequest(Long requestId, String token);
+    Response<String> approveJoinRequest(Long uid, Long requestId, Long groupId, Boolean approve, Long requestUid);
 
     Response<String> changeMemberRole(ChangeRoleDTO changeRoleDTO, String token);
 
