@@ -36,8 +36,11 @@ public class GroupServiceImpl implements GroupService {
     public Response<String> requestJoinGroup(GroupJoinDTO groupJoinDTO, String token) {
         Claims claims = JwtUtils.parseToken(token);
         Long userId = claims.get("uid", Long.class);
-
+        if (groupMapper.isGroupExist(groupJoinDTO.getGroupId()) < 1){
+            return Response.error(409, "群组不存在");
+        }
         if (groupMapper.isUserInGroup(groupJoinDTO.getGroupId(), userId) > 0) {
+
             return Response.error(409, "用户已在群组中");
         }
 

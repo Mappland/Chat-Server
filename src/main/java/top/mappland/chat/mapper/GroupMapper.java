@@ -58,7 +58,7 @@ public interface GroupMapper extends BaseMapper<User> {
      * @param uid  用户 ID
      * @return 是否在聊天域中
      */
-    @Select("SELECT COUNT(*) FROM chat_group.${groupId}_member WHERE uid = #{uid}")
+    @Select("SELECT COUNT(*) FROM chat_user.${uid}_group WHERE group_id = #{groupId}")
     int isUserInGroup(@Param("groupId") Long groupId, @Param("uid") Long uid);
 
 
