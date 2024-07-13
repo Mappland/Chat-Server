@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import top.mappland.chat.model.domain.GroupJoinRequest;
 import top.mappland.chat.model.domain.User;
+import top.mappland.chat.model.domain.UserGroup;
+import top.mappland.chat.model.dto.UserGetGroup;
 import top.mappland.chat.model.dto.UserLoginDTO;
 import top.mappland.chat.model.dto.UserRegisterDTO;
 import top.mappland.chat.model.vo.Response;
@@ -17,6 +20,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 /**
  * UserController 处理用户相关操作，如注册、登录和获取用户详情。
@@ -55,7 +59,7 @@ public class UserController {
         user.setPassword(DigestUtils.sha256Hex(userRegisterDTO.getPassword())); // 密码加密
         user.setEmail(userRegisterDTO.getEmail());
         user.setGender(userRegisterDTO.getGender());
-        user.setCreated_at(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        user.setCreated_at(LocalDateTime.now());
         userService.save(user);
         logger.info("User registered successfully: {}", user.getUid());
         return Response.success("注册成功！", String.valueOf(user.getUid()));
@@ -105,14 +109,28 @@ public class UserController {
         User user = userService.getById(uid);
         if (user != null) {
             UserVO userVO = new UserVO();
+            logger.info(user.toString());
             userVO.setUid(user.getUid());
             userVO.setUsername(user.getUsername());
             userVO.setEmail(user.getEmail());
             userVO.setGender(user.getGender());
-            userVO.setCreated_at(user.getCreated_at());
             return Response.success(userVO);
         } else {
             return Response.error(404, "用户未找到。");
         }
     }
+
+    /**
+     * 根据uid获取用户加如了哪些群组
+     * @param token jwt
+     * @param userGetGroup user获取群组请求类
+     * @return 返回用户加入的群组的信息
+     */
+    @GetMapping("/getgroup")
+    public Response<List<UserGroup>> getPendingJoinRequests(@RequestHeader("Authorization") String token, @RequestBody UserGetGroup userGetGroup) {
+        List<UserGroup> userGroups = userService.getUserGroups(userGetGroup.getUid());
+        return Response.success(userGroups);
+    }
+
+
 }

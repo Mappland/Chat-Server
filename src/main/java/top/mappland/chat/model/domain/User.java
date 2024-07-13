@@ -1,6 +1,9 @@
+
 package top.mappland.chat.model.domain;
 
+import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
@@ -29,6 +32,7 @@ public class User {
     // 性别
     private String gender;
     // 创建时间
-    private String created_at;
+    @TableField("created_at")
+    private LocalDateTime  created_at;
 
 }

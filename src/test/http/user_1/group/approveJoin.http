@@ -1,12 +1,12 @@
 ### Approve Join Request
-POST http://localhost:8888/group/approveJoin
+POST http://47.109.199.76:8888/group/approveJoin
 Authorization: eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJNYXBwbGFuZCIsInVpZCI6MTAwMDAwLCJpYXQiOjE3MjA4Njk1NTAsImV4cCI6MTcyMDk1NTk1MH0.VigsDDjYPdwJ7_-RIrlAkuQ9mMhCdQkA3ZRJEd0Ftd6yKzICbKsbsBtshkTcxEgp
 Content-Type: application/json
 
 {
-  "groupId": 100000000,
+  "groupId": 100000001,
   "requestId": 1,
   "uid": 100000,
   "requestUid": 100001,
-  "approve": true
+  "approve": false
 }

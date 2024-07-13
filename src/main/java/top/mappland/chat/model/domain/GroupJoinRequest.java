@@ -1,5 +1,6 @@
 package top.mappland.chat.model.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 import java.sql.Timestamp;
 
@@ -10,9 +11,11 @@ import java.sql.Timestamp;
 public class GroupJoinRequest {
     private Long id;
     private Long groupId;
-    private Long userId;
+    private Long uid;
     private String status;
+    @TableField(value = "request_time")
     private Timestamp requestTime;
+    @TableField(value = "approve_time")
     private Timestamp approveTime;
     private Long approverId;
 }

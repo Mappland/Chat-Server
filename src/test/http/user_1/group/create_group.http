@@ -3,7 +3,7 @@ POST http://localhost:8888/group/create
 Content-Type: application/json
 
 {
-  "groupName": "mappland's_group",
+  "groupName": "mappland's_group_2",
   "jwt": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJNYXBwbGFuZCIsInVpZCI6MTAwMDAwLCJpYXQiOjE3MjA4Njk1NTAsImV4cCI6MTcyMDk1NTk1MH0.VigsDDjYPdwJ7_-RIrlAkuQ9mMhCdQkA3ZRJEd0Ftd6yKzICbKsbsBtshkTcxEgp",
   "ownerId": 100000
 }
