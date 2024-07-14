@@ -25,6 +25,7 @@ import java.util.List;
 /**
  * UserController 处理用户相关操作，如注册、登录和获取用户详情。
  */
+@CrossOrigin(origins = "*", allowCredentials = "true", allowedHeaders = "*", methods = {})
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
