@@ -126,7 +126,7 @@ public class UserController {
      * @param userGetGroup user获取群组请求类
      * @return 返回用户加入的群组的信息
      */
-    @GetMapping("/getgroup")
+    @PostMapping("/getgroup")
     public <T> Response<T> getPendingJoinRequests(@RequestBody UserGetGroup userGetGroup) {
         // 验证JWT
         Response<String> jwtValidationResponse = JwtUtils.validateJwt(userGetGroup.getJwt(), userGetGroup.getUid());

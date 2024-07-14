@@ -3,11 +3,10 @@ POST http://localhost:8888/api/user/login
 Content-Type: application/json
 
 {
-  "uid": "100003",
-  "password": "testtest"
+  "uid": "100001",
+  "password": "123456"
 }
 
 ### jwt
-eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0IiwidWlkIjoxMDAwMDEsImlhdCI6MTcyMDg3MDk5NiwiZXhwIjoxNzIwOTU3Mzk2fQ.tRq4EOMMyKgWQgLYowME_ubUSsmjHePmyy-wmnc8sV4jiYJmylMHVGcUQoObB1CZ
-
+eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0MiIsInVpZCI6MTAwMDAxLCJpYXQiOjE3MjA5NzQzNjUsImV4cCI6MTcyMTA2MDc2NX0.IN2eDIqAXNLqs-afcLvPAa_s4hzYiN34UXiaR9X-7o2GbwKAmU5I4X1mMiZGUNHf
 

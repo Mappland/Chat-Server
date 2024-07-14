@@ -54,7 +54,7 @@ public class GroupController {
     }
 
     // 获取群组申请
-    @GetMapping("/pendingJoinRequests")
+    @PostMapping("/pendingJoinRequests")
     public Response<List<GroupJoinRequest>> getPendingJoinRequests(@RequestBody GroupManagerDTO groupManagerDTO) {
         return groupService.getPendingJoinRequests(groupManagerDTO);
     }

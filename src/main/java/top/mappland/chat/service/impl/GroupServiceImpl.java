@@ -65,7 +65,6 @@ public class GroupServiceImpl implements GroupService {
         String jwt = groupJoinApproveDTO.getJwt();
         Long requestId = groupJoinApproveDTO.getRequestId();
         Long groupId = groupJoinApproveDTO.getGroupId();
-        Long requestUid = groupJoinApproveDTO.getRequestUid();
 
         // 验证JWT
         Response<String> jwtValidationResponse = JwtUtils.validateJwt(jwt, uid);
@@ -89,8 +88,9 @@ public class GroupServiceImpl implements GroupService {
         groupMapper.updateJoinRequestStatus(groupId, requestId, status, uid);
 
         if (groupJoinApproveDTO.isApprove()) {
-            groupMapper.addGroupMember(groupId, requestUid);
-            groupMapper.insertUserGroupItem(groupId, "MEMBER", requestUid);
+            logger.info(groupJoinApproveDTO.toString());
+            groupMapper.addGroupMember(groupJoinApproveDTO.getGroupId(), groupJoinApproveDTO.getRequestUid());
+            groupMapper.insertUserGroupItem(groupJoinApproveDTO.getGroupId(), "MEMBER", groupJoinApproveDTO.getRequestUid());
         }
 
         String message = groupJoinApproveDTO.isApprove() ? "加入请求已批准" : "加入请求已拒绝";
