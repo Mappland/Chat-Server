@@ -9,6 +9,7 @@ import lombok.Data;
 public class GroupJoinApproveDTO {
     private Long groupId;
     private Long requestId;
+    private String jwt;
     private Long uid;
     private Long requestUid;
     private boolean approve;

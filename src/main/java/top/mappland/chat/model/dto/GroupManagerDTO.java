@@ -2,13 +2,9 @@ package top.mappland.chat.model.dto;
 
 import lombok.Data;
 
-/**
- * 聊天域加入信息
- */
 @Data
-public class GroupJoinDTO {
+public class GroupManagerDTO {
     private Long groupId;
+    private Long uid;
     private String jwt;
-    private Long userId;
-    private String role;
 }

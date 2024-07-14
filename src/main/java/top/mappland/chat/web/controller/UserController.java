@@ -19,7 +19,7 @@ import top.mappland.chat.util.JwtUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
 import java.util.List;
 
 /**
@@ -123,14 +123,18 @@ public class UserController {
 
     /**
      * 根据uid获取用户加如了哪些群组
-     * @param token jwt
      * @param userGetGroup user获取群组请求类
      * @return 返回用户加入的群组的信息
      */
     @GetMapping("/getgroup")
-    public Response<List<UserGroup>> getPendingJoinRequests(@RequestHeader("Authorization") String token, @RequestBody UserGetGroup userGetGroup) {
+    public <T> Response<T> getPendingJoinRequests(@RequestBody UserGetGroup userGetGroup) {
+        // 验证JWT
+        Response<String> jwtValidationResponse = JwtUtils.validateJwt(userGetGroup.getJwt(), userGetGroup.getUid());
+        if (jwtValidationResponse.getCode() != 200) {
+            return (Response<T>) jwtValidationResponse;
+        }
         List<UserGroup> userGroups = userService.getUserGroups(userGetGroup.getUid());
-        return Response.success(userGroups);
+        return (Response<T>) Response.success(userGroups);
     }
 
 

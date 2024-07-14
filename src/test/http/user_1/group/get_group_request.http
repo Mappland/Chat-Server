@@ -1,3 +1,8 @@
 ### 获取用户作为管理员或域主的群的加入请求
 GET http://localhost:8888/group/pendingJoinRequests
-Authorization: eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJNYXBwbGFuZCIsInVpZCI6MTAwMDAwLCJpYXQiOjE3MjA4MTYzMTIsImV4cCI6MTcyMDkwMjcxMn0.ce7P-r-gG9pihXG4gqds6kO918FpCB0XJR5Apys1wRvwqC7dhtcPy00OhzASXRB4
+Content-Type: application/json
+
+{
+  "jwt": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxMjM0NTYiLCJ1aWQiOjEwMDAwMCwiaWF0IjoxNzIwOTY3OTU5LCJleHAiOjE3MjEwNTQzNTl9.HE06xWSsYWmvarGubjNr75pn84r_4doIk3QAu94LueyhVFMy3FnB5hGhy7oSRV5p",
+  "uid": 100000
+}

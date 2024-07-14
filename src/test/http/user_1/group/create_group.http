@@ -1,5 +1,5 @@
 ### 创建聊天域
-POST http://localhost:8888/group/create
+POST http://47.109.199.76:8888/group/create
 Content-Type: application/json
 
 {

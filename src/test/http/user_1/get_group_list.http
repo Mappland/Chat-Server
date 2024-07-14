@@ -1,8 +1,9 @@
 ### Get User Groups
 GET http://localhost:8888/api/user/getgroup
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJNYXBwbGFuZCIsInVpZCI6MTAwMDAwLCJpYXQiOjE3MjA4Njk1NTAsImV4cCI6MTcyMDk1NTk1MH0.VigsDDjYPdwJ7_-RIrlAkuQ9mMhCdQkA3ZRJEd0Ftd6yKzICbKsbsBtshkTcxEgp
 
 {
-  "uid": 100000
+  "uid": 100000,
+  "jwt": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxMjM0NTYiLCJ1aWQiOjEwMDAwMCwiaWF0IjoxNzIwOTY4OTI4LCJleHAiOjE3MjEwNTUzMjh9.hcgYnv5fyOLtItz-wdP3ryqwLc8oT0HSn9rMubBB7ppK_UB25HHcw0TX7DwPp49-"
+
 }

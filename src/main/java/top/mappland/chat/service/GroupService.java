@@ -1,9 +1,7 @@
 package top.mappland.chat.service;
 
-import top.mappland.chat.model.dto.GroupMessageDTO;
+import top.mappland.chat.model.dto.*;
 import top.mappland.chat.model.domain.GroupJoinRequest;
-import top.mappland.chat.model.dto.GroupJoinDTO;
-import top.mappland.chat.model.dto.ChangeRoleDTO;
 import top.mappland.chat.model.vo.Response;
 
 import java.util.List;
@@ -13,9 +11,9 @@ import java.util.List;
  */
 public interface GroupService {
 
-    Response<String> requestJoinGroup(GroupJoinDTO groupJoinDTO, String token);
+    Response<String> requestJoinGroup(GroupJoinDTO groupJoinDTO);
 
-    Response<String> approveJoinRequest(Long uid, Long requestId, Long groupId, Boolean approve, Long requestUid);
+    Response<String> approveJoinRequest(GroupJoinApproveDTO groupJoinApproveDTO);
 
     Response<String> changeMemberRole(ChangeRoleDTO changeRoleDTO, String token);
 
@@ -29,11 +27,10 @@ public interface GroupService {
 
     Response<String> updateGroupAvatar(Long groupId, String avatar, String token);
 
-    Response<String> addMessage(Long groupId, Long userId, String messageType, String messageContent, String filePath);
 
     Response<String> validateGroupAndUser(Long groupId, Long userId);
 
-    Response<List<GroupJoinRequest>> getPendingJoinRequests(String token);
+    <T> Response<T>  getPendingJoinRequests(GroupManagerDTO groupManagerDTO);
 
     String getUsernameByUid(Long uid);
 

@@ -1,5 +1,5 @@
 ### Register a new user
-POST http://localhost:8888/api/user/register
+POST http://47.109.199.76:8888/api/user/register
 Content-Type: application/json
 
 {

@@ -11,9 +11,7 @@ import top.mappland.chat.config.UseDataSource;
 import top.mappland.chat.handler.ChatWebSocketHandler;
 import top.mappland.chat.mapper.GroupMapper;
 import top.mappland.chat.model.domain.GroupJoinRequest;
-import top.mappland.chat.model.dto.GroupJoinDTO;
-import top.mappland.chat.model.dto.ChangeRoleDTO;
-import top.mappland.chat.model.dto.GroupMessageDTO;
+import top.mappland.chat.model.dto.*;
 import top.mappland.chat.model.vo.Response;
 import top.mappland.chat.service.GroupService;
 import top.mappland.chat.util.JwtUtils;
@@ -36,10 +34,15 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     @Transactional
-    public Response<String> requestJoinGroup(GroupJoinDTO groupJoinDTO, String token) {
-        Claims claims = JwtUtils.parseToken(token);
-        Long userId = claims.get("uid", Long.class);
-        if (groupMapper.isGroupExist(groupJoinDTO.getGroupId()) < 1){
+    public Response<String> requestJoinGroup(GroupJoinDTO groupJoinDTO) {
+        // 验证JWT
+        Response<String> jwtValidationResponse = JwtUtils.validateJwt(groupJoinDTO.getJwt(), groupJoinDTO.getUserId());
+        if (jwtValidationResponse.getCode() != 200) {
+            return jwtValidationResponse;
+        }
+
+        Long userId = groupJoinDTO.getUserId();
+        if (groupMapper.isGroupExist(groupJoinDTO.getGroupId()) < 1) {
             return Response.error(409, "群组不存在");
         }
         if (groupMapper.isUserInGroup(groupJoinDTO.getGroupId(), userId) > 0) {
@@ -57,7 +60,19 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     @Transactional
-    public Response<String> approveJoinRequest(Long uid, Long requestId, Long groupId, Boolean approve, Long requestUid) {
+    public Response<String> approveJoinRequest(GroupJoinApproveDTO groupJoinApproveDTO) {
+        Long uid = groupJoinApproveDTO.getUid();
+        String jwt = groupJoinApproveDTO.getJwt();
+        Long requestId = groupJoinApproveDTO.getRequestId();
+        Long groupId = groupJoinApproveDTO.getGroupId();
+        Long requestUid = groupJoinApproveDTO.getRequestUid();
+
+        // 验证JWT
+        Response<String> jwtValidationResponse = JwtUtils.validateJwt(jwt, uid);
+        if (jwtValidationResponse.getCode() != 200) {
+            return jwtValidationResponse;
+        }
+
 
         GroupJoinRequest joinRequest = groupMapper.getPendingJoinRequestById(groupId, requestId);
         if (joinRequest == null) {
@@ -70,22 +85,24 @@ public class GroupServiceImpl implements GroupService {
             return Response.error(403, "无权审批加入请求");
         }
 
-        String status = approve ? "APPROVED" : "REJECTED";
+        String status = groupJoinApproveDTO.isApprove() ? "APPROVED" : "REJECTED";
         groupMapper.updateJoinRequestStatus(groupId, requestId, status, uid);
 
-        if (approve) {
+        if (groupJoinApproveDTO.isApprove()) {
             groupMapper.addGroupMember(groupId, requestUid);
             groupMapper.insertUserGroupItem(groupId, "MEMBER", requestUid);
         }
 
-        String message = approve ? "加入请求已批准" : "加入请求已拒绝";
+        String message = groupJoinApproveDTO.isApprove() ? "加入请求已批准" : "加入请求已拒绝";
         return Response.success(message, null);
     }
 
 
+    // todo 改变已经存在的用户的权限
     @Override
     @Transactional
     public Response<String> changeMemberRole(ChangeRoleDTO changeRoleDTO, String token) {
+
         Claims claims = JwtUtils.parseToken(token);
         Long approverId = claims.get("uid", Long.class);
 
@@ -105,6 +122,7 @@ public class GroupServiceImpl implements GroupService {
         return Response.success("成员权限变更成功", null);
     }
 
+    // todo 邀请用户进入群组
     @Override
     @Transactional
     public Response<String> inviteUserToGroup(Long groupId, Long userId, String role, String token) {
@@ -124,6 +142,7 @@ public class GroupServiceImpl implements GroupService {
         return Response.success("用户邀请成功", null);
     }
 
+    // todo 把用户从群组中删除
     @Override
     @Transactional
     public Response<String> removeUserFromGroup(Long groupId, Long userId, String token) {
@@ -139,6 +158,7 @@ public class GroupServiceImpl implements GroupService {
         return Response.success("用户移除成功", null);
     }
 
+    // todo 删除群组
     @Override
     @Transactional
     public Response<String> deleteGroup(Long groupId, String token) {
@@ -155,6 +175,7 @@ public class GroupServiceImpl implements GroupService {
         return Response.success("聊天域删除成功", null);
     }
 
+    // todo 更爱群组名称
     @Override
     @Transactional
     public Response<String> updateGroupName(Long groupId, String groupName, String token) {
@@ -170,6 +191,7 @@ public class GroupServiceImpl implements GroupService {
         return Response.success("群组名称更新成功", null);
     }
 
+    // todo 更改群组头像
     @Override
     @Transactional
     public Response<String> updateGroupAvatar(Long groupId, String avatar, String token) {
@@ -185,35 +207,34 @@ public class GroupServiceImpl implements GroupService {
         return Response.success("群组头像更新成功", null);
     }
 
-    @Override
-    @Transactional
-    public Response<String> addMessage(Long groupId, Long userId, String messageType, String messageContent, String filePath) {
-        groupMapper.addMessage(groupId, userId, messageType, messageContent, filePath);
-        return Response.success("消息发送成功", null);
-    }
 
+    /**
+     * 获取用户管理的群组的groupId
+     * @param groupManagerDTO: 从客户端获取的类
+     * @return
+     */
     @Override
     @Transactional
     @UseDataSource(DataSourceKey.CHAT_USER)
-    public Response<List<GroupJoinRequest>> getPendingJoinRequests(String token) {
-        Claims claims = JwtUtils.parseToken(token);
-        Long uid = claims.get("uid", Long.class);
-
-        // 获取用户管理的群组ID列表
-        List<Long> adminGroups = groupMapper.getAdminGroups(uid);
-
-        // 如果没有管理的群组，直接返回空列表
-        if (adminGroups.isEmpty()) {
-            return Response.success(Collections.emptyList());
+    public <T> Response<T> getPendingJoinRequests(GroupManagerDTO groupManagerDTO) {
+        Response<T> jwtValidationResponse = JwtUtils.validateJwt(groupManagerDTO.getJwt(), groupManagerDTO.getUid());
+        if (jwtValidationResponse.getCode() != 200) {
+            return jwtValidationResponse;
         }
 
-        return getPendingJoinRequestsByAdminGroups(adminGroups);
+        Long uid = groupManagerDTO.getUid();
+        List<Long> adminGroups = groupMapper.getAdminGroups(uid);
+
+        if (adminGroups.isEmpty()) {
+            return (Response<T>) Response.success(Collections.emptyList());
+        }
+
+        return (Response<T>) getPendingJoinRequestsByAdminGroups(adminGroups);
     }
 
     @Transactional
     @UseDataSource(DataSourceKey.CHAT_GROUP)
     protected Response<List<GroupJoinRequest>> getPendingJoinRequestsByAdminGroups(List<Long> adminGroups) {
-        // 获取待处理的加入请求
         List<GroupJoinRequest> joinRequests = groupMapper.getPendingJoinRequests(adminGroups);
         return Response.success(joinRequests);
     }
@@ -251,7 +272,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public String getUsernameByUid(Long uid){
+    public String getUsernameByUid(Long uid) {
         return groupMapper.getUsernameByUid(uid);
     }
 }

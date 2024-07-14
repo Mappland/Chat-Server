@@ -1,12 +1,12 @@
 ### Approve Join Request
 POST http://localhost:8888/group/approveJoin
-Authorization: eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJNYXBwbGFuZCIsInVpZCI6MTAwMDAwLCJpYXQiOjE3MjA4Njk1NTAsImV4cCI6MTcyMDk1NTk1MH0.VigsDDjYPdwJ7_-RIrlAkuQ9mMhCdQkA3ZRJEd0Ftd6yKzICbKsbsBtshkTcxEgp
 Content-Type: application/json
 
 {
   "groupId": 100000000,
   "requestId": 1,
   "uid": 100000,
-  "requestUid": 100001,
+  "jwt": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxMjM0NTYiLCJ1aWQiOjEwMDAwMCwiaWF0IjoxNzIwOTY3OTU5LCJleHAiOjE3MjEwNTQzNTl9.HE06xWSsYWmvarGubjNr75pn84r_4doIk3QAu94LueyhVFMy3FnB5hGhy7oSRV5p",
+  "requestUid": 100003,
   "approve": true
 }

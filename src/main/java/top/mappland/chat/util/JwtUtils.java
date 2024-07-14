@@ -1,10 +1,13 @@
 package top.mappland.chat.util;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import top.mappland.chat.config.JwtConfig;
+import top.mappland.chat.model.vo.Response;
 
 import javax.annotation.PostConstruct;
 import javax.crypto.SecretKey;
@@ -28,24 +31,6 @@ public class JwtUtils {
     private static SecretKey getSecretKey() {
         byte[] decodedKey = Base64.getDecoder().decode(jwtConfig.getSecret());
         return new SecretKeySpec(decodedKey, 0, decodedKey.length, "HmacSHA512");
-    }
-
-    /**
-     * 生成JWT Token
-     *
-     * @param username 用户名
-     * @param uid      用户ID
-     * @param time     有效期
-     * @return 生成的Token
-     */
-    public static String generateToken(String username, Long uid, Long time) {
-        return Jwts.builder()
-                .setSubject(username)
-                .claim("uid", uid)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + time))
-                .signWith(getSecretKey())
-                .compact();
     }
 
     /**
@@ -77,5 +62,21 @@ public class JwtUtils {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+    }
+
+    public static <T> Response<T> validateJwt(String token, Long expectedUid) {
+        try {
+            Claims claims = parseToken(token);
+            Long tokenUid = claims.get("uid", Long.class);
+
+            if (!tokenUid.equals(expectedUid)) {
+                return Response.error(401, "Token的UID与当前用户UID不符合");
+            }
+            return Response.success(null);
+        } catch (ExpiredJwtException e) {
+            return Response.error(401, "Token已过期");
+        } catch (JwtException e) {
+            return Response.error(400, "Token解析失败");
+        }
     }
 }

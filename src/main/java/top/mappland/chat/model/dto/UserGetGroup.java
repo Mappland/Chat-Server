@@ -5,4 +5,5 @@ import lombok.Data;
 @Data
 public class UserGetGroup {
     private Long uid;
+    private String jwt;
 }

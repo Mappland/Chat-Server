@@ -44,19 +44,21 @@ public class GroupController {
     }
 
     @PostMapping("/approveJoin")
-    public Response<String> approveJoinRequest(@RequestBody GroupJoinApproveDTO groupJoinApproveDTO, @RequestHeader("Authorization") String token) {
-        Long requestId = groupJoinApproveDTO.getRequestId();
-        Long groupId = groupJoinApproveDTO.getGroupId();
-        Long uid = groupJoinApproveDTO.getUid();
-        Long requestUid = groupJoinApproveDTO.getRequestUid();
-        boolean approve = groupJoinApproveDTO.isApprove();
-        return groupService.approveJoinRequest(uid, requestId, groupId, approve, requestUid);
+    public Response<String> approveJoinRequest(@RequestBody GroupJoinApproveDTO groupJoinApproveDTO) {
+        return groupService.approveJoinRequest(groupJoinApproveDTO);
     }
 
     @PostMapping("/join")
-    public Response<String> requestJoinGroup(@RequestBody GroupJoinDTO groupJoinDTO, @RequestHeader("Authorization") String token) {
-        return groupService.requestJoinGroup(groupJoinDTO, token);
+    public Response<String> requestJoinGroup(@RequestBody GroupJoinDTO groupJoinDTO) {
+        return groupService.requestJoinGroup(groupJoinDTO);
     }
+
+    // 获取群组申请
+    @GetMapping("/pendingJoinRequests")
+    public Response<List<GroupJoinRequest>> getPendingJoinRequests(@RequestBody GroupManagerDTO groupManagerDTO) {
+        return groupService.getPendingJoinRequests(groupManagerDTO);
+    }
+
 
     @PostMapping("/changeRole")
     public Response<String> changeMemberRole(@RequestBody ChangeRoleDTO changeRoleDTO, @RequestHeader("Authorization") String token) {
@@ -88,8 +90,4 @@ public class GroupController {
         return groupService.updateGroupAvatar(groupId, avatar, token);
     }
 
-    @GetMapping("/pendingJoinRequests")
-    public Response<List<GroupJoinRequest>> getPendingJoinRequests(@RequestHeader("Authorization") String token) {
-        return groupService.getPendingJoinRequests(token);
-    }
 }

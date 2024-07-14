@@ -1,11 +1,11 @@
 ### 请求加入群组
 POST http://localhost:8888/group/join
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0IiwidWlkIjoxMDAwMDEsImlhdCI6MTcyMDg3MDk5NiwiZXhwIjoxNzIwOTU3Mzk2fQ.tRq4EOMMyKgWQgLYowME_ubUSsmjHePmyy-wmnc8sV4jiYJmylMHVGcUQoObB1CZ
 
 {
   "groupId": 100000000,
-  "userId": 100001,
+  "userId": 100003,
+  "jwt": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0MSIsInVpZCI6MTAwMDAzLCJpYXQiOjE3MjA5NjgwOTgsImV4cCI6MTcyMTA1NDQ5OH0.LxthkpK4JW7yZI1oKvRvGVTiv4SIpl1Vbie2ROUPvHIPLHwJ2BQ9lswV6J9Efth0",
   "role": "MEMBER"
 }
 

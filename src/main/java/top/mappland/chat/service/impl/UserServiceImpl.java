@@ -40,6 +40,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public List<UserGroup> getUserGroups(Long uid) {
+
+
         String tableName = "chat_user." + uid + "_group";
         String sql = "SELECT id, group_id, role FROM " + tableName;
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
