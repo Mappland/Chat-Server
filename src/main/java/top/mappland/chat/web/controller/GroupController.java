@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-@CrossOrigin(origins = "*", allowCredentials = "true", allowedHeaders = "*", methods = {})
+@CrossOrigin(originPatterns = "*", allowCredentials = "true", allowedHeaders = "*", methods = {})
 @RestController
 @RequestMapping("/group")
 public class GroupController {
