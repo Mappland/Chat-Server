@@ -1,3 +1,4 @@
+-- 创建用户总表
 CREATE TABLE user
 (
     uid        BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -9,10 +10,12 @@ CREATE TABLE user
     updated_at TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+-- 设置uid自增，从100000000
 ALTER TABLE user
     AUTO_INCREMENT = 100000;
 
 
+-- 存储过程，当创建新的用户的时候进行调用，会根据新的uid自动创建群组对应的4个表
 DELIMITER //
 
 CREATE PROCEDURE CreateUserTables(IN user_uid BIGINT)

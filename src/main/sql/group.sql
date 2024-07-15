@@ -1,3 +1,5 @@
+
+-- 创建群组总表
 CREATE TABLE all_group
 (
     groupId    BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -8,9 +10,11 @@ CREATE TABLE all_group
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+-- 设置群组群号自增，从100000000
 ALTER TABLE all_group
     AUTO_INCREMENT = 100000000;
 
+-- 存储过程，当创建新的群组的时候进行调用，会根据新的群组号自动创建群组对应的3个表
 DELIMITER //
 
 CREATE PROCEDURE create_chat_group(IN groupId BIGINT, IN ownerId BIGINT)

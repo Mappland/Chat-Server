@@ -2,8 +2,6 @@ package top.mappland.chat.model.vo;
 
 import lombok.Data;
 
-import java.time.LocalDateTime;
-
 @Data
 public class UserVO {
     private Long uid;

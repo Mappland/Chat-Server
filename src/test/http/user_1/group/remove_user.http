@@ -1,7 +1,0 @@
-DELETE http://localhost:8888/api/group/remove
-Content-Type: application/json
-
-{
-  "groupId": 100000000,
-  "userId": 100001
-}

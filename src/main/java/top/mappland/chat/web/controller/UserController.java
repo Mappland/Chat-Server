@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import top.mappland.chat.model.domain.GroupJoinRequest;
 import top.mappland.chat.model.domain.User;
 import top.mappland.chat.model.domain.UserGroup;
 import top.mappland.chat.model.dto.UserGetGroup;
